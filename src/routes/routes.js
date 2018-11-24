@@ -42,7 +42,7 @@ import ECDetail from '../pages/Soa/EC/detail'
 
 const routes = [{
     path: '/',
-    redirect: '/dashboard',
+    redirect: '/promotion',
     name: 'Home'
   },
   {

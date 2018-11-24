@@ -8,6 +8,7 @@
                             <md-icon>assignment</md-icon>
                         </div>
                         <h4 class="title">PROMOTIONS {{$route.params.id}}</h4>
+                        <p align="center"><ring-loader style="margin-right: 80px;" class="md-layout-item md-size-50 mx-auto md-medium-size-50 md-small-size-50 md-xsmall-size-100" :loading="loading" :color="spinnerOptions.color" :size="spinnerOptions.size"></ring-loader></p>
                     </md-card-header>
                     <md-card-content>
                         <md-table v-model="ue" table-header-color="green">
@@ -26,15 +27,30 @@
 
 <script>
 import axios from "axios";
+import RingLoader from "vue-spinner/src/RingLoader.vue";
 
 export default {
+  components: {
+      RingLoader
+  },
   data() {
     return {
-      ue: []
+      ue: [],
+      loading: false,
+      spinnerOptions: {
+        //color: '#3f51b5',
+        color: "#04B404",
+        height: "35px",
+        width: "4px",
+        margin: "2px",
+        radius: "2px"
+      }
     };
   },
   mounted() {
-    axios
+    this.loading = true
+    setTimeout(() => {
+        axios
       .get("http://localhost:8080/listUe")
       .then(resp => {
         this.all_ue = resp.data;
@@ -44,9 +60,12 @@ export default {
           }
         }
       })
-      .catch(err => console.error(err));
-
-      console.log('UE for the selected Promo : '+this.ue)
+      .catch(err => console.error(err))
+      .then(() => {
+          this.loading = false
+      })
+    }, 5000)
+    console.log('UE for the selected Promo : '+this.ue)
   }
 };
 </script>
